@@ -26,8 +26,6 @@
 #include <iot/data.h>
 #include "device-can.h"
 
-#include <execinfo.h>
-
 #include "devsdk/devsdk.h"
 #define ERR_CHECK(x)                                      \
 	if (x.code) {                                           \
@@ -45,18 +43,7 @@ volatile sig_atomic_t quit = 0;
 /* signal handler to catch the signals */
 static void handle_sig (int sig)
 {
-	void *array[10];
-	size_t size;
-
-	quit = 1;
-
-	// get void*'s for all entries on the stack
-	size = backtrace(array, 10);
-
-	// print out all the frames to stderr
 	fprintf(stderr, "Error: signal %d:\n", sig);
-	backtrace_symbols_fd(array, size, STDERR_FILENO);
-
 	exit(1);
 }
 
